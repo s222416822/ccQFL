@@ -31,18 +31,20 @@ metrics such as performance and communication delay. In addition, we provide a t
 to establish and discuss many factors such as model convergence, communication costs, etc.
 
 ## Highlights
-• QFL framework with Qiskit, including distributed learning via TCP/IP.
-• Chained Continuous QFL (ccQFL) Framework that operates without aggregation.
-• Detailed assessment of ccQFL Framework, compared with standard QFL thoroughly.
-• Experiments extended to PennyLane, TensorCircuit, validated in many scenarios.
+- QFL framework with Qiskit, including distributed learning via TCP/IP. 
+- Chained Continuous QFL (ccQFL) Framework that operates without aggregation. 
+- Detailed assessment of ccQFL Framework, compared with standard QFL thoroughly. 
+- Experiments extended to PennyLane, TensorCircuit, validated in many scenarios.
 
 ## Paper
 - **Arxiv Preprint**: []()
-- **Journal Version**: [https://doi.org/10.1016/j.future.2025.107800]()
+- **Journal Version**: Future Generation Computer Systems [https://doi.org/10.1016/j.future.2025.107800]()
 
 ## Installation
+- Qiskit:
+  - pip install qiskit qiskit qiskit_algorithms qiskit_machine_learning pylatexenc genomic-benchmarks qiskit-aer
+  - pip install qiskit_ibm_runtime
 
-
-
+    
 Being updated...
 
