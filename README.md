@@ -46,5 +46,10 @@ to establish and discuss many factors such as model convergence, communication c
   - pip install qiskit_ibm_runtime
 
     
-Being updated...
+References:
+1. https://github.com/Qiskit/qiskit
+2. Ville Bergholm et al. PennyLane: Automatic differentiation of hybrid quantum-classical computations. 2018. arXiv:1811.04968
+2. Zhao, H. (2023). Non-IID quantum federated learning with one-shot communication complexity. Quantum Machine Intelligence, 5(1), 3.
+2. https://tensorcircuit.readthedocs.io/en/latest/
+3. https://github.com/PennyLaneAI/qml
 

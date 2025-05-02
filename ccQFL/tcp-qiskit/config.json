@@ -1,0 +1,1 @@
+{"algorithm": "defaultQFL", "data_used": "iris", "maxiter": 100, "num_devices": 3, "num_rounds": 100, "logs_dir": "logs"}

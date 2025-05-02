@@ -1,0 +1,13 @@
+{
+  "algorithm": "cssQFL",
+  "data_used": "iris",
+  "maxiter": 100,
+  "num_devices": 3,
+  "num_rounds": 100,
+  "logs_dir": "logs",
+  "peers": [
+    {"host": "127.0.0.1", "port": 8081},
+    {"host": "127.0.0.1", "port": 8082},
+    {"host": "127.0.0.1", "port": 8083}
+  ]
+}

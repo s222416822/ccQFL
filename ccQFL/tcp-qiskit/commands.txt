@@ -1,0 +1,13 @@
+!pip install qiskit
+!pip install qiskit_algorithms
+!pip install qiskit_machine_learning
+!pip install pylatexenc
+!pip install genomic-benchmarks
+
+
+python server.py --algorithm defaultQFL --data_used iris --maxiter 100 --num_devices 3 --num_rounds 100
+python client.py --client_id 0
+
+python client_css.py --client_id 0
+python client_css.py --client_id 1
+python client_css.py --client_id 2
