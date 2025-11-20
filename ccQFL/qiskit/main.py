@@ -9,17 +9,7 @@ from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2 as Sampler
 from qiskit_ibm_runtime.fake_provider import FakeManilaV2
 import numpy as np
 
-import random
-import numpy as np
-import time
-import threading
-
 data_used = "iris"  # Options: synthetic, iris, genomics, mnist, mnist_keras, fashion
-# data_used = "synthetic"
-# data_used = "genomics"
-# data_used = "mnist"
-# data_used = "mnist_keras"
-# data_used = "fashion"
 
 data_size = "normal"  # Options: normal, small
 # data_size = "small"
@@ -125,12 +115,7 @@ def main_method(algorithm, optimizer, pca_n_component, simulator, sampler, aer_s
             average_weights = np.mean(total_weights, axis=0)
             with open(f"{logs}/average_weights.txt", 'a') as file:
                 file.write(f"Comm_round: {n} - average_weights: {average_weights}\n")
-            server_device.vqc.initial_point = average_weights
-            server_device.training()
-            with open(f"{logs}/training_time_server.txt", 'a') as file:
-                file.write(f"Comm_round: {n} - Device: {server_device.idx} - training_time: {server_device.training_time}\n")
-            with open(f"{logs}/server.txt", 'a') as file:
-                file.write(f"Comm_round: {n} - Device: {server_device.idx}  - train_acc: {server_device.train_score_q4:.2f} - test_acc: {server_device.test_score_q4:.2f}\n")
+
             comm_end_time = time.time() - comm_start_time
             print(f"Comm_round: {n} - Comm_time: {comm_end_time}")
             with open(f"{logs}/comm_time.txt", 'a') as file:
@@ -138,13 +123,11 @@ def main_method(algorithm, optimizer, pca_n_component, simulator, sampler, aer_s
         with open(f"{logs}/objective_values_devices.txt", 'w') as file:
             for device in devices_list:
                 file.write(f"Device {device.idx}: {device.objective_func_vals}\n")
-        with open(f"{logs}/server_objective_values_devices.txt", 'w') as file:
-            file.write(f"Device {server_device.idx}: {server_device.objective_func_vals}\n")
+
         with open(f"{logs}/device_params_per_iter.txt", 'w') as file:
             for device in devices_list:
                 file.write(f"Device {device.idx}: {device.params_per_iter}\n")
-        with open(f"{logs}/server_params_per_iter.txt", 'w') as file:
-            file.write(f"Device {server_device.idx}: {server_device.params_per_iter}\n")
+
 
     elif algorithm == "optimized-defaultQFL":
         average_weights = None
@@ -179,12 +162,7 @@ def main_method(algorithm, optimizer, pca_n_component, simulator, sampler, aer_s
             average_weights = np.mean(weights_list, axis=0)
             with open(f"{logs}/average_weights.txt", 'a') as file:
                 file.write(f"Comm_round: {n} - average_weights: {average_weights}\n")
-            server_device.vqc.initial_point = average_weights
-            server_device.training()
-            with open(f"{logs}/training_time_server.txt", 'a') as file:
-                file.write(f"Comm_round: {n} - Device: {server_device.idx} - training_time: {server_device.training_time}\n")
-            with open(f"{logs}/server.txt", 'a') as file:
-                file.write(f"Comm_round: {n} - Device: {server_device.idx}  - train_acc: {server_device.train_score_q4:.2f} - test_acc: {server_device.test_score_q4:.2f}\n")
+
             comm_end_time = time.time() - comm_start_time
             print(f"Comm_round: {n} - Comm_time: {comm_end_time}")
             with open(f"{logs}/comm_time.txt", 'a') as file:
@@ -192,13 +170,11 @@ def main_method(algorithm, optimizer, pca_n_component, simulator, sampler, aer_s
         with open(f"{logs}/objective_values_devices.txt", 'w') as file:
             for device in devices_list:
                 file.write(f"Device {device.idx}: {device.objective_func_vals}\n")
-        with open(f"{logs}/server_objective_values_devices.txt", 'w') as file:
-            file.write(f"Device {server_device.idx}: {server_device.objective_func_vals}\n")
+
         with open(f"{logs}/device_params_per_iter.txt", 'w') as file:
             for device in devices_list:
                 file.write(f"Device {device.idx}: {device.params_per_iter}\n")
-        with open(f"{logs}/server_params_per_iter.txt", 'w') as file:
-            file.write(f"Device {server_device.idx}: {server_device.params_per_iter}\n")
+
 
     elif algorithm == "optimized-chainedQFL":
         import time
@@ -325,22 +301,15 @@ def main_method(algorithm, optimizer, pca_n_component, simulator, sampler, aer_s
                 file.write(f"Comm_round: {n} - Comm_time: {comm_end_time}\n")
             with open(f"{logs}/chained_weights.txt", 'a') as file:
                 file.write(f"Comm_round: {n} - average_weights: {weights_chained}\n")
-            server_device.vqc.initial_point = weights_chained
-            server_device.training()
-            with open(f"{logs}/training_time_server.txt", 'a') as file:
-                file.write(f"Comm_round: {n} - Device: {server_device.idx} - training_time: {server_device.training_time}\n")
-            with open(f"{logs}/server.txt", 'a') as file:
-                file.write(f"Comm_round: {n} - Device: {server_device.idx}  - train_acc: {server_device.train_score_q4:.2f} - test_acc: {server_device.test_score_q4:.2f}\n")
+
         with open(f"{logs}/objective_values_devices.txt", 'w') as file:
             for device in devices_list:
                 file.write(f"Device {device.idx}: {device.objective_func_vals}\n")
-        with open(f"{logs}/server_objective_values_devices.txt", 'w') as file:
-            file.write(f"Device {server_device.idx}: {server_device.objective_func_vals}\n")
+
         with open(f"{logs}/device_params_per_iter.txt", 'w') as file:
             for device in devices_list:
                 file.write(f"Device {device.idx}: {device.params_per_iter}\n")
-        with open(f"{logs}/server_params_per_iter.txt", 'w') as file:
-            file.write(f"Device {server_device.idx}: {server_device.params_per_iter}\n")
+
 
     elif algorithm == "chainedQFL":
         import random
@@ -379,22 +348,15 @@ def main_method(algorithm, optimizer, pca_n_component, simulator, sampler, aer_s
                 file.write(f"Comm_round: {n} - Comm_time: {comm_end_time}\n")
             with open(f"{logs}/chained_weights.txt", 'a') as file:
                 file.write(f"Comm_round: {n} - average_weights: {weights_chained}\n")
-            server_device.vqc.initial_point = weights_chained
-            server_device.training()
-            with open(f"{logs}/training_time_server.txt", 'a') as file:
-                file.write(f"Comm_round: {n} - Device: {server_device.idx} - training_time: {server_device.training_time}\n")
-            with open(f"{logs}/server.txt", 'a') as file:
-                file.write(f"Comm_round: {n} - Device: {server_device.idx}  - train_acc: {server_device.train_score_q4:.2f} - test_acc: {server_device.test_score_q4:.2f}\n")
+
         with open(f"{logs}/objective_values_devices.txt", 'w') as file:
             for device in devices_list:
                 file.write(f"Device {device.idx}: {device.objective_func_vals}\n")
-        with open(f"{logs}/server_objective_values_devices.txt", 'w') as file:
-            file.write(f"Device {server_device.idx}: {server_device.objective_func_vals}\n")
+
         with open(f"{logs}/device_params_per_iter.txt", 'w') as file:
             for device in devices_list:
                 file.write(f"Device {device.idx}: {device.params_per_iter}\n")
-        with open(f"{logs}/server_params_per_iter.txt", 'w') as file:
-            file.write(f"Device {server_device.idx}: {server_device.params_per_iter}\n")
+
 
 if __name__ == "__main__":
     algorithms = [

@@ -74,3 +74,7 @@ class Device:
         print(f"Quantum VQC on the training dataset: {self.train_score_q4:.2f}")
         print(f"Quantum VQC on the test dataset:     {self.test_score_q4:.2f}")
 
+    def evaluate(self, weights):
+        self.vqc.initial_point = weights
+        self.test_score_q4_1 = self.vqc.score(self.test_features, self.test_labels)
+

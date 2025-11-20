@@ -160,7 +160,7 @@ def load_and_preprocess_data(data_used, data_size, subset_size_device, subset_si
         print(server_test_features)
         print(server_test_labels)
 
-    elif data_used == "synthetic":
+    elif data_used == "syntheti":
         num_devices = 10
         num_samples = 1000
         num_features = 4

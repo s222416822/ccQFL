@@ -11,7 +11,7 @@ import optax
 import jax
 
 # Configuration
-num_devices = 20  # n_node
+num_devices = 20
 no_of_classes = 10
 no_of_qubits = 10
 k = 42

@@ -7,52 +7,19 @@ import time
 import numpy as np
 from qiskit.circuit.library import RealAmplitudes
 import os
-from datetime import datetime
 from device import Device
 from data_preparation import DataPreparation
 
 ansatz = RealAmplitudes(num_qubits=4)
 
-# Synchronization events for managing the training sequence
 train_events = []
 stop_event = threading.Event()
-server_training_event = threading.Event()
-server_done_event = threading.Event()  # New event for server completion
+server_evaluating_event = threading.Event()
+server_done_event = threading.Event()
 
 peer_weights = {}
 num_devices = 0
 devices_list = []
-
-def server_thread(server_device, comm_round, aggregated_weights, logs_dir):
-    try:
-        print("Server performing local training and testing the global model...")
-        print("Average initial point for server, ", aggregated_weights)
-        server_device.vqc.initial_point = aggregated_weights
-        print("Server assigned initial weights..")
-        print("Trying...")
-        print(type(server_device))
-        print(server_device.vqc.initial_point)
-        print("ID-----------", server_device.idx)
-        server_device.training()
-        print("Server finished training and testing the global model...")
-        print(
-            f"Round {comm_round} - Training accuracy: {server_device.train_score_q4:.2f}, Test accuracy: {server_device.test_score_q4:.2f}")
-        print("Server finished performing local training and testing....")
-        print("Writing to server text file... ")
-
-        with open(f"{logs_dir}/server.txt", 'a') as file:
-            file.write(
-                f"Comm_round: {comm_round} - Device: {server_device.idx}  - train_acc: {server_device.train_score_q4:.2f} - test_acc: {server_device.test_score_q4:.2f}\n")
-
-    except Exception as e:
-        print("Server failed to train.")
-        print("Error", e)
-
-    finally:
-        # Signal that server training has finished
-        server_training_event.set()
-        server_done_event.set()  # Signal that the server is done
-
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Federated Learning Client')
@@ -221,9 +188,9 @@ def main():
 
         if client_id == num_devices - 1:
             server_time = time.time()
-            server_training_event.clear()  # Clear the server training event before starting server thread
-            server_thread(server_device, round_num, device.vqc.weights, logs_dir)
-            server_done_event.wait()  # Wait for the server to complete
+            server_evaluating_event.clear()  # Clear the server training event before starting server thread
+            # server_thread(server_device, round_num, device.vqc.weights, logs_dir)
+            # server_done_event.wait()  # Wait for the server to complete
             server_time = time.time() - server_time
         else:
             server_time = 0
@@ -251,9 +218,7 @@ def main():
         for device in devices_list:
             file.write(f"Device {device.idx}: {device.objective_func_vals}\n")
 
-    with open(f"{logs_dir}/server_objective_values_devices.txt", 'w') as file:
-        # for device in devices_list:
-        file.write(f"Device {server_device.idx}: {server_device.objective_func_vals}\n")
+
 
 
 if __name__ == "__main__":

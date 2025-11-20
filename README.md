@@ -37,7 +37,6 @@ to establish and discuss many factors such as model convergence, communication c
 - Experiments extended to PennyLane, TensorCircuit, validated in many scenarios.
 
 ## Paper
-- **Arxiv Preprint**: []()
 - **Journal Version**: Future Generation Computer Systems [https://doi.org/10.1016/j.future.2025.107800]()
 
 ## Installation

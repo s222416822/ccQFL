@@ -7,7 +7,6 @@ import json
 from device import Device
 from data_preparation import DataPreparation
 import os
-# NUM_ROUNDS = 100  # Number of communication rounds
 
 devices_list = []
 def parse_arguments():
@@ -29,7 +28,6 @@ def start_client():
     # config = load_config()
 
     client_id = args.client_id
-    # logs_dir = config['logs_dir']
 
     config = load_config()
     algorithm = config['algorithm']
@@ -38,11 +36,8 @@ def start_client():
     # NUM_ROUNDS = config['num_rounds']
     maxiter = config['maxiter']
 
-    # logs_dir = f"logs/{algorithm}_{data_used}_maxiter={maxiter}_numDevices={NUM_CLIENTS}"
-    # if not os.path.exists(logs_dir):
-    #     os.makedirs(logs_dir)
 
-    logs_dir = f"logs/{algorithm}_{data_used}_maxiter={maxiter}_numDevices={NUM_CLIENTS}"
+    logs_dir = f"logs"
     try:
         os.makedirs(logs_dir, exist_ok=True)
     except FileExistsError:
@@ -95,15 +90,13 @@ def start_client():
         # Update the device with the new average weights
         device.vqc.initial_point = average_weights
 
-        time.sleep(1)  # Wait for 1 second before sending the next message
+        time.sleep(1)
         print(f"Completed the communication round {round_num}")
 
         comm_end_time = time.time() - comm_start_time
         with open(f"{logs_dir}/comm_time.txt", 'a') as file:
             file.write(f"Comm_round: {round_num} - Device: {client_id} - Comm_time: {comm_end_time}\n")
         print(f"Communication time for round {round_num} - Device: {client_id} - Comm_time: {comm_end_time} seconds")
-
-
 
     socket_client.close()
 

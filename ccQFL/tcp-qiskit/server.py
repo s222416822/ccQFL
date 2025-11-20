@@ -17,23 +17,6 @@ initial_point = np.asarray([0.5] * ansatz.num_parameters)
 global aggregated_weights
 server_training_event = threading.Event()
 
-def server_thread(server_device, comm_round, aggregated_weights, logs_dir):
-    try:
-        print("Server performing local training and testing the global model...")
-        print("Average initial point for server, ", aggregated_weights)
-        server_device.vqc.initial_point = aggregated_weights
-        print("Server assigned initial weights..")
-        server_device.training()
-        print("Server finished training and testing the global model...")
-        print(f"Round {comm_round} - Training accuracy: {server_device.train_score_q4:.2f}, Test accuracy: {server_device.test_score_q4:.2f}")
-        print("Server finished performing local training and testing....")
-        with open(f"{logs_dir}/server.txt", 'a') as file:
-            file.write(f"Comm_round: {comm_round} - Device: {server_device.idx}  - train_acc: {server_device.train_score_q4:.2f} - test_acc: {server_device.test_score_q4:.2f}\n")
-    except Exception as e:
-        print("Server failed to train.")
-        print("Error", e)
-    finally:
-        server_training_event.set()
 
 def load_config():
     with open('config.json', 'r') as f:
@@ -73,7 +56,7 @@ def handle_client(client_socket, client_address, barrier, round_barrier, num_rou
                     all_weights.clear()  # Clear the list for the next round
                     print(f"Aggregated weights for round {comm_round}: {aggregate_weights}")
                     print("Perform server training and testing...")
-                    server_thread(server_device, comm_round, aggregate_weights, logs_dir)
+                    # server_thread(server_device, comm_round, aggregate_weights, logs_dir)
                 else:
                     print("Error: No weights to aggregate.")
             else:
@@ -139,8 +122,6 @@ def main():
 
     server.close()
 
-    with open(f"{logs_dir}/server_objective_values_devices.txt", 'w') as file:
-        file.write(f"Device {server_device.idx}: {server_device.objective_func_vals}\n")
 
 if __name__ == "__main__":
     main()

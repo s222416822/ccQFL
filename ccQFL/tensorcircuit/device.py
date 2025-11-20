@@ -12,7 +12,6 @@ readout_mode = 'softmax'
 K = tc.set_backend('jax')
 
 def filter(x, y, class_list):
-    """Filter function to select data points based on class list."""
     y_flat = y.flatten()
     keep = np.zeros(len(y_flat), dtype=bool)
     for c in class_list:
